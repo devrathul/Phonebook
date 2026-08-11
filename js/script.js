@@ -15,6 +15,24 @@ let getPhoneBook = async () => {
 
 }
 
+// Delete Phonebook data 
+
+let deleteUser = async (id) => {
+    try{
+        let response = await fetch(`https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts/${id}`, {method: "DELETE"});
+        if(response.ok){
+            getPhoneBook();
+        }
+    } catch(error){
+        console.log(error);
+    }
+} 
+
+
+function deleteData(id){
+    deleteUser(id);
+}
+
 let appendphonebooklist = (phonebookdata) => {
     contactListEl.innerHTML = "";
     for (let i = 0; i < phonebookdata.length; i++) {

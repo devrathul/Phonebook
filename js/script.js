@@ -1,4 +1,6 @@
 let contactListEl = document.getElementById("contactList");
+let saveUserFormEl = document.getElementById("saveUserForm");
+let saveItem={};
 
 // Get Phonebook data 
 
@@ -26,7 +28,42 @@ let deleteUser = async (id) => {
     } catch(error){
         console.log(error);
     }
-} 
+}
+
+saveUserFormEl.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    let name = saveUserFormEl["txtName"].value.trim();
+    let phone = saveUserFormEl["txtPhone"].value.trim();
+    let email = saveUserFormEl["txtEmail"].value.trim();
+    saveItem = {
+        "name":name,
+        "phone":phone,
+        "email":email
+    }
+    addToPhoneBook(saveItem);
+});
+
+let addToPhoneBook = async (userData)=>{
+    try {
+        const response = await fetch("https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+
+        getPhoneBook();
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+function editData(id){
+
+}
 
 
 function deleteData(id){
@@ -59,7 +96,7 @@ let appendphonebooklist = (phonebookdata) => {
                                         </td>
                                         <td class="p-4 border-b border-slate-200">
                                             <div class="flex justify-around">
-                                                <button type="button" class="block text-sm font-semibold text-slate-800">
+                                                <button type="button" class="block text-sm font-semibold text-slate-800" onclick="editData(${phonebookdata[i].id})">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="#f59e0b" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"

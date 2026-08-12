@@ -14,7 +14,7 @@
             <div class="flex">
                 <div class="w-full max-w-[500px] m-auto">
                     <div class="w-full bg-gray-100 shadow-2xl rounded-lg p-5 my-5">
-                        <form id="saveUserForm">
+                        <form id="saveUserForm">                        
                             <div class="flex flex-col mb-5">
                                 <lable for="txtName">Name</lable>
                                 <input class="outline-none mt-4 border rounded-md p-1" type="text" name="txtName"
@@ -33,6 +33,34 @@
                             <div class="flex justify-center items-center my-10">
                                 <button type="submit" class="flex gap-2 px-4 py-2 rounded-md bg-slate-400">
                                     <span class="text-white">Save</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="#fff" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <form id="updateUserForm" class="hidden"> 
+                            <input type="hidden" name="txtID" id="txtID" value="">                       
+                            <div class="flex flex-col mb-5">
+                                <lable for="txtName">Name</lable>
+                                <input class="outline-none mt-4 border rounded-md p-1" type="text" name="txtName"
+                                    id="txtUpdateName" required/>
+                            </div>
+                            <div class="flex flex-col mb-5">
+                                <lable for="txtPhone">Phone</lable>
+                                <input class="outline-none mt-4 border rounded-md p-1" type="text" name="txtPhone"
+                                    id="txtUpdatePhone" required/>
+                            </div>
+                            <div class="flex flex-col mb-5">
+                                <lable for="txtEmail">Email</lable>
+                                <input class="outline-none mt-4 border rounded-md p-1" type="text" name="txtEmail"
+                                    id="txtUpdateEmail" required/>
+                            </div>
+                            <div class="flex justify-center items-center my-10">
+                                <button type="submit" class="flex gap-2 px-4 py-2 rounded-md bg-slate-400">
+                                    <span class="text-white">Update</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="#fff" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"

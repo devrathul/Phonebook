@@ -1,6 +1,13 @@
 let contactListEl = document.getElementById("contactList");
 let saveUserFormEl = document.getElementById("saveUserForm");
-let saveItem={};
+let updateUserFormEl = document.getElementById("updateUserForm");
+let txtIDEL = document.getElementById("txtID");
+let txtUpdateNameEl = document.getElementById("txtUpdateName");
+let txtUpdatePhoneEl = document.getElementById("txtUpdatePhone");
+let txtUpdateEmailEl = document.getElementById("txtUpdateEmail");
+
+
+let saveItem = {};
 
 // Get Phonebook data 
 
@@ -20,30 +27,45 @@ let getPhoneBook = async () => {
 // Delete Phonebook data 
 
 let deleteUser = async (id) => {
-    try{
-        let response = await fetch(`https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts/${id}`, {method: "DELETE"});
-        if(response.ok){
+    try {
+        let response = await fetch(`https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts/${id}`, { method: "DELETE" });
+        if (response.ok) {
             getPhoneBook();
         }
-    } catch(error){
+    } catch (error) {
         console.log(error);
     }
 }
 
-saveUserFormEl.addEventListener('submit',(event)=>{
+saveUserFormEl.addEventListener('submit', (event) => {
     event.preventDefault();
     let name = saveUserFormEl["txtName"].value.trim();
     let phone = saveUserFormEl["txtPhone"].value.trim();
     let email = saveUserFormEl["txtEmail"].value.trim();
     saveItem = {
-        "name":name,
-        "phone":phone,
-        "email":email
+        "name": name,
+        "phone": phone,
+        "email": email
     }
     addToPhoneBook(saveItem);
 });
 
-let addToPhoneBook = async (userData)=>{
+updateUserFormEl.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let id = updateUserFormEl["txtID"].value.trim();
+    let name = updateUserFormEl["txtUpdateName"].value.trim();
+    let phone = updateUserFormEl["txtUpdatePhone"].value.trim();
+    let email = updateUserFormEl["txtUpdateEmail"].value.trim();
+    saveItem = {
+        "id": id,
+        "name": name,
+        "phone": phone,
+        "email": email
+    }
+    updatephonebook(saveItem);
+});
+
+let addToPhoneBook = async (userData) => {
     try {
         const response = await fetch("https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts", {
             method: "POST",
@@ -52,7 +74,6 @@ let addToPhoneBook = async (userData)=>{
             },
             body: JSON.stringify(userData)
         });
-
         const data = await response.json();
 
         getPhoneBook();
@@ -61,16 +82,62 @@ let addToPhoneBook = async (userData)=>{
     }
 }
 
-function editData(id){
+let updatephonebook = async (updatedData) => {
+    try {
+        const response = await fetch(
+            `https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts/${updatedData.id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedData)
+            }
+        );
 
+        if (response.ok) {
+            getPhoneBook();
+        } else {
+            throw new Error("Failed to update contact");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 
 
-function deleteData(id){
+let getphonebookbyID = async (id) => {
+    try {
+        const response = await fetch(`https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts/${id}`);
+        const data = await response.json();
+        if (response.ok) {
+            updateUserFormEl.classList.remove("hidden");
+            saveUserFormEl.classList.add("hidden");
+            txtIDEL.value = data.id;
+            txtUpdateNameEl.value = data.name;
+            txtUpdatePhoneEl.value = data.phone;
+            txtUpdateEmailEl.value = data.email;
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+function loadEditData(id) {
+    getphonebookbyID(id)
+}
+
+
+function deleteData(id) {
     deleteUser(id);
 }
 
-let appendphonebooklist = (phonebookdata) => {
+let appendphonebooklist = (phonebookdata) => {  
+    updateUserFormEl.reset();
+    saveUserFormEl.reset();
+    updateUserFormEl.classList.add("hidden");
+    saveUserFormEl.classList.remove("hidden");
+
     contactListEl.innerHTML = "";
     for (let i = 0; i < phonebookdata.length; i++) {
         contactListEl.innerHTML += `<tr class="hover:bg-slate-50">
@@ -96,7 +163,7 @@ let appendphonebooklist = (phonebookdata) => {
                                         </td>
                                         <td class="p-4 border-b border-slate-200">
                                             <div class="flex justify-around">
-                                                <button type="button" class="block text-sm font-semibold text-slate-800" onclick="editData(${phonebookdata[i].id})">
+                                                <button type="button" class="block text-sm font-semibold text-slate-800" onclick="loadEditData(${phonebookdata[i].id})">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="#f59e0b" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"

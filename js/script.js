@@ -5,8 +5,8 @@ let txtIDEL = document.getElementById("txtID");
 let txtUpdateNameEl = document.getElementById("txtUpdateName");
 let txtUpdatePhoneEl = document.getElementById("txtUpdatePhone");
 let txtUpdateEmailEl = document.getElementById("txtUpdateEmail");
-
-
+let searchItem = document.getElementById("txtusersearch");
+let phonebooklistData = [];
 let saveItem = {};
 
 // Get Phonebook data 
@@ -16,6 +16,7 @@ let getPhoneBook = async () => {
         let response = await fetch("https://6a79f5b2674f43f4db1201ec.mockapi.io/contacts/contacts");
         if (response.ok) {
             let phonebookdata = await response.json();
+            phonebooklistData = phonebookdata;
             appendphonebooklist(phonebookdata);
         }
     } catch (error) {
@@ -182,5 +183,11 @@ let appendphonebooklist = (phonebookdata) => {
                                     </tr>`;
     }
 }
+
+searchItem.addEventListener('input',(event)=>{
+    let inputVal = event.target.value;
+    let result = phonebooklistData.filter(item => item.name?.toLowerCase().includes(inputVal.toLowerCase()));
+    appendphonebooklist(result);
+});
 
 getPhoneBook();
